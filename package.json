@@ -1,0 +1,22 @@
+{
+  "name": "gitevents-tito",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitevents/gitevents-tito.git"
+  },
+  "author": "Ian Crowther <ian@nexttick.io> (http://nexttick.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitevents/gitevents-tito/issues"
+  },
+  "homepage": "https://github.com/gitevents/gitevents-tito#readme",
+  "dependencies": {
+    "async": "^1.5.0"
+  }
+}
