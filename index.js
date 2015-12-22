@@ -3,8 +3,8 @@
 var tito = require('tito-api');
 var async = require('async');
 
-module.exports = function(config) {
-  var t = tito(config.api)
+module.exports = function giteventsTito(config) {
+  var t = tito(config.api);
 
   async.series([
     function(cb){
@@ -15,7 +15,7 @@ module.exports = function(config) {
     }
   ],
   function(err, results){
-    if err { console.error(err) }
+    if (err) { console.error(err) }
     console.log(results)
   });
 };
