@@ -73,3 +73,29 @@ test('duplicateEvent', function (t) {
     t.equal(event.attributes.slug, duplicateEventSlug)
   })
 });
+
+test('updateEvent', function (t) {
+  t.plan(1);
+
+  var payload = {
+    issue: {
+      body: "---\r\ndate: 31.12.2099\r\n---"
+    }
+  }
+
+  var updatedEvent = {
+    attributes: {
+      date: "31.12.2099"
+    }
+  }
+
+  nock(/api\.tito\.io/)
+    .patch(/\/v2\/.*\/.*/)
+    .reply(200, {
+      data: updatedEvent
+    })
+
+  tito.updateEvent(payload, function(err, event) {
+    t.deepEqual(event, updatedEvent);
+  })
+});

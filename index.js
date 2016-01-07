@@ -21,14 +21,16 @@ GitEventsTito.prototype.createEvent = function createEvent() {
   function(err, results) { if (err) console.error(err) });
 }
 
-GitEventsTito.prototype.updateEvent = function updateEvent(t, duplicate, cb) {
-  var updatedEvent = [];
-  var x = getEventDetails(payload, function(eventDetails){
-    console.log(eventDetails);
-    t.updateEvent(duplicate.attributes.slug, x)
-    .on('data', function(data) { updatedEvent.push(data); })
-    .on('end', function() { cb(null, updatedEvent); })
-  });
+GitEventsTito.prototype.updateEvent = function updateEvent(payload, cb) {
+  var updatedEvent;
+
+  var titoUpdateEvent = function(err, eventDetails){
+    this.t.updateEvent(eventDetails.slug, eventDetails)
+      .on('data', function(data) { updatedEvent = data; })
+      .on('end', function() { cb(null, updatedEvent); })
+  }
+
+  this.getEventDetails(payload, titoUpdateEvent.bind(this));
 }
 
 GitEventsTito.prototype.duplicateEvent = function duplicateEvent(event, cb) {
