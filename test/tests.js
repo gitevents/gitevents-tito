@@ -1,7 +1,9 @@
 'use strict'
 
-var test = require('tape')
+var nock = require('nock')
 var parser = require('markdown-parse')
+var test = require('tape')
+
 var payload = require('../test/common/payload')
 var credentials = require('../test/common/tito.credentials')
 
@@ -29,7 +31,18 @@ test('getEventSlug', function (t) {
 
 test('getLatestEvent', function(t) {
   t.plan(1)
+
+  nock(/api\.tito\.io/)
+    .get(/\/v2\/.*\/events/)
+    .reply(200, {
+      data: [
+        { id: 3 },
+        { id: 2 },
+        { id: 1 }
+      ]
+    });
+
   tito.getLatestEvent(function(err, event) {
-    t.equal(event.id, 'january-2016')
+    t.equal(event.id, 3)
   })
 })
