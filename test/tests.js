@@ -5,9 +5,11 @@ var parser = require('markdown-parse')
 var test = require('tape')
 
 var payload = require('../test/common/payload')
-var credentials = require('../test/common/tito.credentials')
 
-var tito = require('../index')(credentials)
+var tito = require('../index')({
+  authToken: 'foo',
+  account: 'bar'
+});
 
 test('getEventDetails', function(t) {
   t.plan(2)
