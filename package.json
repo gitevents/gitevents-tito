@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/tests.js | tap-spec",
+    "test": "tape test.js | tap-spec",
     "start": "watch 'clear; npm run --silent test;' ./ -d"
   },
   "repository": {

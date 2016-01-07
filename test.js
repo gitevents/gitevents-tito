@@ -10,7 +10,7 @@ var payload = {
   }
 }
 
-var tito = require('../index')({
+var tito = require('./index')({
   authToken: 'foo',
   account: 'bar'
 });
