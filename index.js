@@ -12,13 +12,14 @@ function GitEventsTito(opts) {
   this.t = tito({ authToken: opts.authToken, account: opts.account });
 };
 
-GitEventsTito.prototype.createEvent = function createEvent() {
+GitEventsTito.prototype.createEvent = function createEvent(payload, cb) {
+  var that = this;
+
   async.waterfall([
-    function(cb) { getLatestEvent(cb); },
-    function(event, cb) { duplicateEvent(t, event, cb); },
-    function(duplicate, cb) { updateEvent(t, duplicate, cb); }
-  ],
-  function(err, results) { if (err) console.error(err) });
+    function(cb) { that.getLatestEvent(cb); },
+    function(event, cb) { that.duplicateEvent(event, cb); },
+    function(duplicatedEvent, cb) { that.updateEvent(payload, cb); }
+  ], cb)
 }
 
 GitEventsTito.prototype.updateEvent = function updateEvent(payload, cb) {
