@@ -31,11 +31,11 @@ GitEventsTito.prototype.updateEvent = function updateEvent(t, duplicate, cb) {
   });
 }
 
-GitEventsTito.prototype.duplicateEvent = function duplicateEvent(t, event, cb) {
-  var duplicate = [];
-  t.duplicate(event.attributes.slug)
-  .on('data', function(data) { duplicate.push(data); })
-  .on('end', function() { cb(null, duplicate); })
+GitEventsTito.prototype.duplicateEvent = function duplicateEvent(event, cb) {
+  var duplicatedEvent;
+  this.t.duplicate(event.attributes.slug)
+  .on('data', function(data) { duplicatedEvent = data; })
+  .on('end', function() { cb(null, duplicatedEvent); })
 }
 
 GitEventsTito.prototype.getLatestEvent = function getLatestEvent(cb) {

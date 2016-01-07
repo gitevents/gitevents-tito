@@ -46,3 +46,30 @@ test('getLatestEvent', function(t) {
     t.equal(event.id, 3)
   })
 })
+
+test('duplicateEvent', function (t) {
+  t.plan(1)
+
+  var eventSlug = 'foo'
+  var duplicateEventSlug = eventSlug + '-copy'
+  var event = {
+    attributes: {
+      slug: eventSlug
+    }
+  }
+  var duplicateEvent = {
+    attributes: {
+      slug: duplicateEventSlug
+    }
+  }
+
+  nock(/api\.tito\.io/)
+    .post(/\/v2\/.*\/.*\/duplicate/)
+    .reply(201, {
+      data: duplicateEvent
+    })
+
+  tito.duplicateEvent(event, function(err, event) {
+    t.equal(event.attributes.slug, duplicateEventSlug)
+  })
+});
