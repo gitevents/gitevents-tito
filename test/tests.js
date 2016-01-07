@@ -4,7 +4,11 @@ var nock = require('nock')
 var parser = require('markdown-parse')
 var test = require('tape')
 
-var payload = require('../test/common/payload')
+var payload = {
+  issue: {
+    body: '---\r\nname: foo\r\nvenue: bar\r\naddress: baz\r\ndate: 31.12.2099\r\n---'
+  }
+}
 
 var tito = require('../index')({
   authToken: 'foo',
@@ -13,6 +17,7 @@ var tito = require('../index')({
 
 test('getEventDetails', function(t) {
   t.plan(2)
+
   tito.getEventDetails(payload, function(err, eventDetails) {
     t.equal(eventDetails.data.slug, 'december-2099')
     t.equal(eventDetails.data['start-date'], '2099-12-31T00:00:00+00:00')
@@ -21,6 +26,7 @@ test('getEventDetails', function(t) {
 
 test('isIssueValid', function (t) {
   t.plan(1)
+
   parser(payload.issue.body, function(err, body) {
     t.equal(tito.issueIsValid(body), true)
   })
@@ -28,6 +34,7 @@ test('isIssueValid', function (t) {
 
 test('getEventSlug', function (t) {
   t.plan(1)
+
   t.equal(tito.getEventSlug('31/12/2099'), 'december-2099')
 })
 
@@ -54,11 +61,13 @@ test('duplicateEvent', function (t) {
 
   var eventSlug = 'foo'
   var duplicateEventSlug = eventSlug + '-copy'
+
   var event = {
     attributes: {
       slug: eventSlug
     }
   }
+
   var duplicateEvent = {
     attributes: {
       slug: duplicateEventSlug
@@ -79,15 +88,9 @@ test('duplicateEvent', function (t) {
 test('updateEvent', function (t) {
   t.plan(1);
 
-  var payload = {
-    issue: {
-      body: "---\r\ndate: 31.12.2099\r\n---"
-    }
-  }
-
   var updatedEvent = {
     attributes: {
-      date: "31.12.2099"
+      date: '2099-12-31T00:00:00+00:00'
     }
   }
 
@@ -103,53 +106,37 @@ test('updateEvent', function (t) {
 });
 
 test('createEvent', function (t) {
-  nock.cleanAll();
   t.plan(1);
 
-  var payload = {
-    issue: {
-      body: "---\r\ndate: 31.12.2099\r\n---"
-    }
-  }
+  nock.cleanAll();
 
   var event = {
     attributes: {
-      slug: 'foo'
+      slug: 'december-2099'
     }
   }
 
   var duplicateEvent = {
     attributes: {
-      slug: 'foo-copy'
+      slug: 'december-2099-copy'
     }
   }
 
   var updatedEvent = {
     attributes: {
-      date: "31.12.2099"
+      date: '2099-12-31T00:00:00+00:00'
     }
   }
 
   nock(/api\.tito\.io/)
     .get(/\/v2\/.*\/events/)
-    .reply(200, {
-      data: [event]
-    });
-
-  nock(/api\.tito\.io/)
+    .reply(200, { data: [event] })
     .post(/\/v2\/.*\/.*\/duplicate/)
-    .reply(201, {
-      data: duplicateEvent
-    })
-
-  nock(/api\.tito\.io/)
+    .reply(201, { data: duplicateEvent })
     .patch(/\/v2\/.*\/.*/)
-    .reply(200, {
-      data: updatedEvent
-    })
+    .reply(200, { data: updatedEvent })
 
   tito.createEvent(payload, function(err, event) {
     t.deepEqual(event, updatedEvent);
   })
 });
-
