@@ -13,7 +13,7 @@ function GitEventsTito(opts) {
   this.tito = tito({ authToken: opts.authToken, account: opts.account });
 }
 
-GitEventsTito.prototype.createEvent = function (payload, cb) {
+GitEventsTito.prototype.createEvent = function createEvent (payload, cb) {
   var self = this;
 
   async.waterfall([
@@ -23,7 +23,7 @@ GitEventsTito.prototype.createEvent = function (payload, cb) {
   ], cb)
 }
 
-GitEventsTito.prototype.updateEvent = function (payload, cb) {
+GitEventsTito.prototype.updateEvent = function updateEvent (payload, cb) {
   var updatedEvent;
 
   var titoUpdateEvent = function(err, eventDetails){
@@ -35,7 +35,7 @@ GitEventsTito.prototype.updateEvent = function (payload, cb) {
   this.getEventDetails(payload, titoUpdateEvent.bind(this));
 }
 
-GitEventsTito.prototype.duplicateEvent = function (event, cb) {
+GitEventsTito.prototype.duplicateEvent = function duplicateEvent (event, cb) {
   var duplicatedEvent;
 
   this.tito.duplicate(event.attributes.slug)
@@ -43,7 +43,7 @@ GitEventsTito.prototype.duplicateEvent = function (event, cb) {
     .on('end', function() { cb(null, duplicatedEvent); })
 }
 
-GitEventsTito.prototype.getLatestEvent = function (cb) {
+GitEventsTito.prototype.getLatestEvent = function getLatestEvent (cb) {
   var events;
 
   this.tito.events()
@@ -51,7 +51,7 @@ GitEventsTito.prototype.getLatestEvent = function (cb) {
     .on('end', function(){ cb(null, events[0]); })
 }
 
-GitEventsTito.prototype.issueIsValid = function (body) {
+GitEventsTito.prototype.issueIsValid = function issueIsValid (body) {
   if (!body.attributes) return false
 
   if (!body.attributes.name && !body.attributes.date && !body.attributes.venue && !body.attributes.address) return false
@@ -59,13 +59,13 @@ GitEventsTito.prototype.issueIsValid = function (body) {
   return true
 };
 
-GitEventsTito.prototype.getEventSlug = function (date) {
+GitEventsTito.prototype.getEventSlug = function getEventSlug (date) {
   var m = moment(date.replace(/\//g, ' '), 'DD MM YYYY');
 
   return m.format('MMMM').toLowerCase() + '-' + m.format('YYYY')
 }
 
-GitEventsTito.prototype.getEventDetails = function (payload, cb) {
+GitEventsTito.prototype.getEventDetails = function getEventDetails (payload, cb) {
   var extractEventDetails = function(error, body) {
     if (error) return new Error(error);
 
