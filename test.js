@@ -19,8 +19,8 @@ test('getEventDetails', function(t) {
   t.plan(2)
 
   tito.getEventDetails(payload, function(err, eventDetails) {
-    t.equal(eventDetails.data.slug, 'december-2099')
-    t.equal(eventDetails.data['start-date'], '2099-12-31T00:00:00+00:00')
+    t.equal(eventDetails.slug, 'december-2099')
+    t.equal(eventDetails['start-date'], '2099-12-31T00:00:00+00:00')
   })
 })
 
@@ -88,6 +88,12 @@ test('duplicateEvent', function (t) {
 test('updateEvent', function (t) {
   t.plan(1);
 
+  var originalEvent = {
+    attributes: {
+      slug: 'december-2099'
+    }
+  }
+
   var updatedEvent = {
     attributes: {
       date: '2099-12-31T00:00:00+00:00'
@@ -100,7 +106,7 @@ test('updateEvent', function (t) {
       data: updatedEvent
     })
 
-  tito.updateEvent(payload, function(err, event) {
+  tito.updateEvent(originalEvent, payload, function(err, event) {
     t.deepEqual(event, updatedEvent);
   })
 });
