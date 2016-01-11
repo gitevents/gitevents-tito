@@ -19,15 +19,15 @@ GitEventsTito.prototype.createEvent = function createEvent (payload, cb) {
   async.waterfall([
     function(cb) { self.getLatestEvent(cb); },
     function(event, cb) { self.duplicateEvent(event, cb); },
-    function(duplicatedEvent, cb) { self.updateEvent(payload, cb); }
+    function(duplicatedEvent, cb) { self.updateEvent(duplicatedEvent, payload, cb); }
   ], cb)
 }
 
-GitEventsTito.prototype.updateEvent = function updateEvent (payload, cb) {
+GitEventsTito.prototype.updateEvent = function updateEvent (duplicatedEvent, payload, cb) {
   var updatedEvent;
 
   var titoUpdateEvent = function(err, eventDetails){
-    this.tito.updateEvent(eventDetails.slug, eventDetails)
+    this.tito.updateEvent(duplicatedEvent.attributes.slug, eventDetails)
       .on('data', function(data) { updatedEvent = data; })
       .on('end', function() { cb(null, updatedEvent); })
   }
@@ -74,11 +74,9 @@ GitEventsTito.prototype.getEventDetails = function getEventDetails (payload, cb)
       var startDate = moment(body.attributes.date.replace(/\//g, ' '), "DD MM YYYY").format();
 
       cb(null, {
-        data: {
-          slug: slug,
-          'start-date': startDate
-        }
-      })
+        slug: slug,
+        'start-date': startDate
+      });
     }
 
     return new Error('invalid event info - body contains no attributes.');
