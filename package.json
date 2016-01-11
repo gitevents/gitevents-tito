@@ -19,6 +19,7 @@
   "homepage": "https://github.com/gitevents/gitevents-tito#readme",
   "dependencies": {
     "async": "^1.5.0",
+    "contributor": "^0.1.25",
     "markdown-parse": "^0.2.1",
     "moment": "^2.10.6",
     "tito-api": "^1.0.0"
@@ -28,5 +29,25 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.3.0",
     "watch": "^0.17.1"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Michael Barrett",
+      "email": null,
+      "url": "https://github.com/mike182uk",
+      "contributions": 13,
+      "additions": 457,
+      "deletions": 418,
+      "hireable": null
+    },
+    {
+      "name": "Ian Crowther",
+      "email": "ian@nexttick.io",
+      "url": "https://github.com/iancrowther",
+      "contributions": 1,
+      "additions": 21,
+      "deletions": 0,
+      "hireable": true
+    }
+  ]
 }
