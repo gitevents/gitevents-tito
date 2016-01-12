@@ -1,7 +1,7 @@
 {
   "name": "gitevents-tito",
   "version": "0.0.4",
-  "description": "",
+  "description": "A Gitevents plugin for adding / updating events in Tito.",
   "main": "index.js",
   "scripts": {
     "test": "tape test.js | tap-spec",
