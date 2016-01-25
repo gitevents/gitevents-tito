@@ -4,8 +4,9 @@
   "description": "A Gitevents plugin for adding / updating events in Tito.",
   "main": "index.js",
   "scripts": {
-    "test": "tape test.js | tap-spec",
-    "start": "watch 'clear; npm run --silent test;' ./ -d"
+    "coverage": "istanbul cover ./node_modules/.bin/tape -- test.js",
+    "start": "watch 'clear; npm run --silent test;' ./ -d",
+    "test": "tape test.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "tito-api": "^1.0.0"
   },
   "devDependencies": {
+    "istanbul": "^0.4.2",
     "nock": "^4.0.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.3.0",
